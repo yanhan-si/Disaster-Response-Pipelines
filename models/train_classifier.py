@@ -1,24 +1,52 @@
+# import libraries
 import sys
+import pandas as pd
+from sqlalchemy import create_engine
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+from sklearn.pipeline import Pipeline
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.multioutput import MultiOutputClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split, GridSearchCV
+import pickle
 
 
 def load_data(database_filepath):
-    pass
+    engine = create_engine('sqlite:///./'+database_filepath)
+    df = pd.read_sql_table('DisasterResponse', engine)
+    X = df.message.values
+    Y = df.iloc[:, 4:].values
+    category_names = df.iloc[:, 4:].columns.values
+    return X, Y, category_names
 
 
 def tokenize(text):
-    pass
+    tokens = word_tokenize(text)
+    lemmatizer = WordNetLemmatizer()
+
+    clean_tokens = []
+    for tok in tokens:
+        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
+        clean_tokens.append(clean_tok)
+
+    return clean_tokens
 
 
 def build_model():
-    pass
-
+    pipeline = Pipeline([
+        ('vect', CountVectorizer(tokenizer=tokenize)),
+        ('tfidf', TfidfTransformer()),
+        ('clf', MultiOutputClassifier(RandomForestClassifier()))
+    ])
+    return pipeline
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    pass
+    return model.score(X_test, Y_test)
 
 
 def save_model(model, model_filepath):
-    pass
+    pickle.dump(model, open(model_filepath, 'wb'))
 
 
 def main():
