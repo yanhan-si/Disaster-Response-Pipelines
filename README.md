@@ -1,5 +1,11 @@
 # Disaster Response Pipeline Project
 
+When disasters happen, there will be millions of communications either direct or via social media. At this time, disaster response organziations need to filter and then pull out the messages which are the most important and relevant. 
+
+The way that disasters are typically responded to is that different organizations will take care of different parts of the problem. One organization might care about mdeical supplies, another would care about electricity etc. 
+
+These categories are what we need to pull out for each message in the dataset. In this project, I built a data pipeline to prepare the message data from major natural disasters around the world and a machine learning pipeline to categorize emergency text messages based on the need communicated by the sender. Finally, this disaster response pipeline was deployed through a Flask web app.
+
 ####  List of python libraries used
 *pandas
 *numpy
@@ -17,11 +23,6 @@
 *models/train_classifier.py -- a machine learning pipeline
 
 *app/run.py -- a Flask web app
-
-### Overview
-
-In this project, I built a data pipeline to prepare the message data from major natural disasters around the world and a machine learning pipeline to categorize emergency text messages based on the need communicated by the sender. Finally, this 
-disaster response pipeline was deployed through a Flask web app.
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
