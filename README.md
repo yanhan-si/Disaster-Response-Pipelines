@@ -18,6 +18,10 @@
 
 *app/run.py -- a Flask web app
 
+### Overview
+
+In this project, I built a data pipeline to prepare the message data from major natural disasters around the world and a machine learning pipeline to categorize emergency text messages based on the need communicated by the sender. Finally, this 
+disaster response pipeline was deployed through a Flask web app.
 
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
