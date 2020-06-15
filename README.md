@@ -10,6 +10,19 @@ These categories are what we need to pull out for each message in the dataset. I
 
 -------------------------------
 
+## I. ETL Pipeline
+
+## II. ML Pipeline
+
+## III. Web APP deployment
+Here is what the web page looks like. You can enter a message and get the output immediately.
+Let's take this sentence *"I'm badly injured. I need help"* as an example and see what the output looks like.
+Our classifier correctly classifies this message into "Related", "Request", "Aid Related" and "Medical Help" categories.
+
+![Prediction](https://github.com/yanhan-si/Disaster-Response-Pipelines/blob/master/Prediction.png)
+
+-------------------------------
+
 ####  ***List of python libraries used***
 *pandas
 *numpy
