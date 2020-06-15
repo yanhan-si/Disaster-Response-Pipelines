@@ -1,5 +1,24 @@
 # Disaster Response Pipeline Project
 
+####  List of python libraries used
+*pandas
+*numpy
+*nltk
+*sklearn
+*flask
+*plotly
+*sqlalchemy
+*re
+
+#### Files in the repository
+
+*data/process_data.py -- a data ETL pipeline
+
+*models/train_classifier.py -- a machine learning pipeline
+
+*app/run.py -- a Flask web app
+
+
 ### Instructions:
 1. Run the following commands in the project's root directory to set up your database and model.
 
