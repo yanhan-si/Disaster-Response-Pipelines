@@ -13,7 +13,7 @@ def load_data(messages_filepath="./data/disaster_messages.csv",
 
 
 def clean_data(messages_df, categories_df):
-    ''''
+    '''
     INPUT
     messages_df - pandas dataframe
     categories_df - pandas dataframe
