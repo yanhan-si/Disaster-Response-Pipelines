@@ -30,24 +30,24 @@ Summary of the training data
 -------------------------------
 
 ####  ***List of python libraries used***
-*pandas
-*numpy
-*nltk
-*sklearn
-*flask
-*plotly
-*sqlalchemy
-*re
+* pandas
+* numpy
+* nltk
+* sklearn
+* flask
+* plotly
+* sqlalchemy
+* re
 
 -------------------------------
 
 #### ***Files in the repository***
 
-*data/process_data.py -- a data ETL pipeline
+* data/process_data.py -- a data ETL pipeline
 
-*models/train_classifier.py -- a machine learning pipeline
+* models/train_classifier.py -- a machine learning pipeline
 
-*app/run.py -- a Flask web app
+* app/run.py -- a Flask web app
 
 -------------------------------
 
