@@ -8,8 +8,9 @@ from nltk.stem import WordNetLemmatizer
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.multioutput import MultiOutputClassifier
+from xgboost import XGBClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, RandomizedSearchCV
 import pickle
 import re
 
@@ -60,7 +61,7 @@ def build_model():
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(RandomForestClassifier()))
+        ('clf', MultiOutputClassifier(XGBClassifier(), n_jobs=-1))
     ])
     return pipeline
 
@@ -83,6 +84,7 @@ def main():
     5. Evaluate on the test dataset
     6. Save the model
     '''
+
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
@@ -91,15 +93,47 @@ def main():
 
         print('Building model...')
         model = build_model()
+        print(model.get_params().keys())
+        parameters_random = {
+
+            'clf__estimator__min_child_weight': (0, 0.1, 1, 10, 100, 500),
+            'clf__estimator__learning_rate': (0.01, 0.1, 1),
+            'clf__estimator__min_split_loss': (0, 0.01, 0.1, 1),
+            'clf__estimator__max_depth': (2, 6, 8, 10, 12),
+            'clf__estimator__reg_lambda': (0.1, 1, 2, 5, 10)
+        }
+
+        random_model = RandomizedSearchCV(model, parameters_random,cv=5)
 
         print('Training model...')
-        model.fit(X_train, Y_train)
+        random_model.fit(X_train, Y_train)
+        print("Best Score: ", random_model.best_score_)  # Best Score:  0.2802774609053288
+        print("Best Params: ", random_model.best_params_) # {'clf__estimator__reg_lambda': 10,
+        # 'clf__estimator__min_split_loss': 0, 'clf__estimator__min_child_weight': 1, 'clf__estimator__max_depth':
+        # 10, 'clf__estimator__learning_rate': 1}
+
+        # parameters_grid = {
+        #
+        #     'clf__estimator__min_child_weight': (0, 0.1, 1, 5),
+        #     'clf__estimator__learning_rate': (0.1, 1, 3),
+        #     'clf__estimator__min_split_loss': (0, 0.01),
+        #     'clf__estimator__max_depth': (8, 10, 12),
+        #     'clf__estimator__reg_lambda': (5, 10, 15)
+        # }
+        # grid_model = GridSearchCV(model, parameters_grid, cv=5)
+
+        # print('Training model...')
+        # grid_model.fit(X_train, Y_train)
+        # print("Best Score: ", grid_model.best_score_)
+        # print("Best Params: ", grid_model.best_params_)
 
         print('Evaluating model...')
-        evaluate_model(model, X_test, Y_test, category_names)
+        print(evaluate_model(random_model, X_test, Y_test, category_names)) # 0.2925247902364607
+        # print(evaluate_model(grid_model, X_test, Y_test, category_names))
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
-        save_model(model, model_filepath)
+        save_model(random_model, model_filepath)
+        # save_model(grid_model, model_filepath)
 
         print('Trained model saved!')
 
